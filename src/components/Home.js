@@ -17,7 +17,7 @@ export default function HomePage() {
           We focus on social cohesion and integration through education programs, and social activities that run throughout the year for diverse ages.
         </Text>
         <Text style={styles.sectionContent}>
-          Our organisation spreads moderation and Islamic Creed based on the teachings of Prophet Muhammad, peace be upon him, and the consensus of the four Islamic schools of Ahlus-Sunnah.
+          Our organisation spreads moderation and Islamic Creed based on the teachings of Prophet Muhammad, peace be upon him, and the consensus of the four Islamic schools of Ahlus-Sunnah wal Jama'ah.
           We call for unity and peace, through promoting moderation, and warnings of extremism.
         </Text>
         <Text style={styles.sectionContent}> Over the years, the Hararian Organization has continued to provide a multitude of services providing a culturally accepted understanding for the Hararian Australian community.
