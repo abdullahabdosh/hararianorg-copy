@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, ScrollView, Image, Linking } from 'react-native';
-import Footer from './Footer';
+import Footer from '../components/Footer';
+import HomeSlider from '../components/HomeSlider';
+import UpcomingSlider from '../components/UpcomingSlider';
+import ArticlesSlider from '../components/ArticlesSlider';
 
 export default function HomePage() {
   return (
@@ -8,7 +11,13 @@ export default function HomePage() {
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Welcome to the Hararian Organization</Text>
       </View>
-      <Image source={{ uri: 'https://storage.googleapis.com/islamic_lessons_images/Nabi%20Mawlud%20Invite' }} style={styles.bannerImage} />
+    
+      <HomeSlider/>
+
+      <UpcomingSlider/>
+
+      <ArticlesSlider/>
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>About Us</Text>
         <Text style={styles.sectionContent}>
@@ -57,7 +66,6 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: '100%',
     height: 200,
-    marginBottom: 20,
   },
   section: {
     padding: 20,
@@ -68,6 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    marginTop: 50,
   },
   sectionContent: {
     fontSize: 16,

@@ -7,10 +7,10 @@ import { AppRegistry } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Zoom from './src/components/Zoom';
-import ContactUs from './src/components/ContactUs';
-import Help from './src/components/Help';
-import Home from './src/components/Home';
+import Zoom from './src/pages/Zoom';
+import ContactUs from './src/pages/ContactUs';
+import Help from './src/pages/Help';
+import Home from './src/pages/Home';
 
 const Tab = createBottomTabNavigator();
 

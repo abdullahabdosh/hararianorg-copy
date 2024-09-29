@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, Button, Alert, SafeAreaView, ScrollView } from 'react-native';
-import Footer from './Footer';
+import Footer from '../components/Footer';
 
 export default function ContactUs() {
   const [name, setName] = useState('');

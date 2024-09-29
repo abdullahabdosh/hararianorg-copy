@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons/faFacebookSquare';
 import { faInstagramSquare } from '@fortawesome/free-brands-svg-icons/faInstagramSquare';
 import { faTiktok } from '@fortawesome/free-brands-svg-icons/faTiktok';
-import Footer from './Footer';
+import Footer from '../components/Footer';
 
 
 export default class Zoom extends Component {
