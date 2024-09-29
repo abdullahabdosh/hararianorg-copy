@@ -19,7 +19,7 @@ export default class Zoom extends Component {
 
   fetchLessons = async () => {
     try {
-      const response = await fetch('http://192.168.1.5:3000/lessons'); // make sure to change this if using a different network
+      const response = await fetch('http://192.168.1.4:3000/lessons'); // make sure to change this if using a different network
       if (!response.ok) {
         throw new Error(`HTTP status ${response.status}`);
       }
@@ -71,8 +71,9 @@ export default class Zoom extends Component {
               </View>
             </View>
           ))}
-          <Footer> </Footer>
+          
         </ScrollView>
+        <Footer> </Footer>
       </View>
 
     );
@@ -87,59 +88,59 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    //padding: 20,
+    paddingTop: 20,  // Added padding top for better spacing from the top of the screen
   },
   header: {
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: 24,  // Increased size for better visibility
+    fontWeight: 'bold',  // Added weight
+    marginBottom: 20,
     textAlign: 'center',
   },
   lesson: {
     marginBottom: 20,
-    padding: 10,
+    padding: 20,  // Increased padding for better spacing within cards
     backgroundColor: '#f9f9f9',
-    borderRadius: 5,
-    width: '100%',
+    borderRadius: 10,  // Increased radius for a smoother look
+    width: '90%',  // Adjusted width for better alignment
+    alignSelf: 'center',  // Align center to ensure it aligns well in the parent
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
-    paddingBottom: 30,
+    marginBottom: 10,  // Adjusted bottom padding
   },
   image: {
     width: '100%',
-    height: 300,
-    marginBottom: 10,
+    height: 200,  // Adjusted height for a better aspect ratio
+    borderRadius: 5,  // Added borderRadius to image
   },
   description: {
     fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   dateTime: {
     fontSize: 14,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   zoomLink: {
     fontSize: 14,
-    marginBottom: 5,
+    marginBottom: 10,
+    color: '#1a0dab',  // Added color to highlight link
   },
   meetingID: {
     fontSize: 14,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   socialPlatforms: {
     marginTop: 10,
-    justifyContent: 'space-around',
-    alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',  // Ensure social icons span the width of the card
   },
-  socialPlatform: {
-    fontSize: 14,
-    marginBottom: 10,
-  },
-  platform_icons: {
-    size: 30,
-    colour: "#3b5998"
-  }
 });
+

@@ -11,6 +11,7 @@ import Zoom from './src/pages/Zoom';
 import ContactUs from './src/pages/ContactUs';
 import Help from './src/pages/Help';
 import Home from './src/pages/Home';
+import Hilal from './src/pages/Hilal';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +21,7 @@ function App() {
       <Tab.Navigator>
         <Tab.Screen name='Home' component={Home} />
         <Tab.Screen name='Zoom' component={Zoom} />
+        <Tab.Screen name='Hilal' component={Hilal} />
         <Tab.Screen name='ContactUs' component={ContactUs} />
         <Tab.Screen name='Help' component={Help} />
       </Tab.Navigator>
