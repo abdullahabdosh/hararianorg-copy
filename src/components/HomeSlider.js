@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 
 const HomeSlider = () => (
     <View style={styles.container}>
-        <Text style={styles.header}>Check out what's been happening recently</Text>
+        <Text style={styles.header}></Text>
         <Swiper
             showsButtons={false}
             autoplay={true}

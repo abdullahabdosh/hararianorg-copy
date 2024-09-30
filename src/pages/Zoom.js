@@ -1,146 +1,156 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Image, TouchableOpacity, Linking } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons/faFacebookSquare';
-import { faInstagramSquare } from '@fortawesome/free-brands-svg-icons/faInstagramSquare';
-import { faTiktok } from '@fortawesome/free-brands-svg-icons/faTiktok';
-import Footer from '../components/Footer';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 
+const getTodaysDate = () => {
+    const today = new Date();
+    return today.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+};
 
-export default class Zoom extends Component {
-  state = {
-    lessons: [],
-    loading: true
-  };
+const todayDate = getTodaysDate();
 
-  componentDidMount() {
-    this.fetchLessons();
-  }
+const LessonsPage = () => {
+    const [lessons, setLessons] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  fetchLessons = async () => {
-    try {
-      const response = await fetch('http://192.168.1.4:3000/lessons'); // make sure to change this if using a different network
-      if (!response.ok) {
-        throw new Error(`HTTP status ${response.status}`);
-      }
-      const lessons = await response.json();
-      this.setState({ lessons, loading: false });
-    } catch (error) {
-      console.error('Error fetching lessons:', error.message);
-      this.setState({ loading: false });
-    }
-  };
-  
+    useEffect(() => {
+        const fetchLessons = async () => {
+            try {
+                const response = await fetch('http://192.168.1.4:3000/lessons');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setLessons(data);
+            } catch (error) {
+                console.error('Error fetching lessons:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  render() {
-    const { lessons, loading } = this.state;
+        fetchLessons();
+    }, []);
 
     if (loading) {
-      return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      );
+        return (
+            <View style={styles.container}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
     }
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.header}>Available Lessons</Text>
-        <ScrollView>
-          {lessons.map((lesson, index) => (
-            <View key={index} style={styles.lesson}>
-              <Text style={styles.title}>{lesson.title}</Text>
-              <Image source={{ uri: lesson.image }} style={styles.image} />
-              <Text style={styles.description}>{lesson.description}</Text>
-              <Text style={styles.dateTime}>Time: {lesson.date_time}</Text>
-              <Text style={styles.zoomLink}>Zoom Link: {lesson.zoom_link}</Text>
-              <Text style={styles.meetingID}>{lesson.meeting_id}</Text>
-              <View style={styles.socialPlatforms}>
-                {/* facebook icon with the link*/}
-                <TouchableOpacity onPress={() => Linking.openURL(lesson.social_platforms.facebook)}>
-                <FontAwesomeIcon icon={faFacebookSquare} size={30} color="#3b5998" />
-              </TouchableOpacity>
+        <View style={styles.container}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
+            >
+                {/* Header */}
+                <View style={styles.headerContainer}>
+                    <Text style={styles.dateText}>{todayDate}</Text>
+                    <Text style={styles.headerTitle}>Today's Lessons</Text>
+                </View>
 
-              <TouchableOpacity onPress={() => Linking.openURL(lesson.social_platforms.instagram)}>
-              <FontAwesomeIcon icon={faInstagramSquare} size={30} color="#3b5998" />
-              </TouchableOpacity>
+                {/* Top Lesson Section */}
+                {lessons.length > 0 && (
+                    <TouchableOpacity
+                        style={styles.topNewsCard}
+                        onPress={() => console.log('Navigating to the Top Lesson')}
+                    >
+                        <Image
+                            source={{ uri: lessons[0].image }}
+                            style={styles.topNewsImage}
+                        />
+                        <Text style={styles.topNewsTitle}>{lessons[0].title}</Text>
+                    </TouchableOpacity>
+                )}
 
-              <TouchableOpacity onPress={() => Linking.openURL(lesson.social_platforms.tiktok)}>
-                <FontAwesomeIcon icon={faTiktok} size={30} color="#3b5998" />
-              </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-          
-        </ScrollView>
-        <Footer> </Footer>
-      </View>
-
+                {/* Other Lessons Section */}
+                <Text style={styles.recentNewsHeader}>Other Lessons</Text>
+                {lessons.slice(1).map((lesson, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        style={styles.recentNewsCard}
+                        onPress={() => console.log(`Navigating to ${lesson.title}`)}
+                    >
+                        <Image
+                            source={{ uri: lesson.image }}
+                            style={styles.recentNewsImage}
+                        />
+                        <Text style={styles.recentNewsTitle}>{lesson.title}</Text>
+                        <Text style={styles.recentNewsAuthorDate}>Time: {lesson.date_time}</Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </View>
     );
-    
-  }
-  
-}
-
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    paddingTop: 20,  // Added padding top for better spacing from the top of the screen
-  },
-  header: {
-    fontSize: 24,  // Increased size for better visibility
-    fontWeight: 'bold',  // Added weight
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  lesson: {
-    marginBottom: 20,
-    padding: 20,  // Increased padding for better spacing within cards
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,  // Increased radius for a smoother look
-    width: '90%',  // Adjusted width for better alignment
-    alignSelf: 'center',  // Align center to ensure it aligns well in the parent
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,  // Adjusted bottom padding
-  },
-  image: {
-    width: '100%',
-    height: 200,  // Adjusted height for a better aspect ratio
-    borderRadius: 5,  // Added borderRadius to image
-  },
-  description: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  dateTime: {
-    fontSize: 14,
-    marginBottom: 10,
-  },
-  zoomLink: {
-    fontSize: 14,
-    marginBottom: 10,
-    color: '#1a0dab',  // Added color to highlight link
-  },
-  meetingID: {
-    fontSize: 14,
-    marginBottom: 10,
-  },
-  socialPlatforms: {
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',  // Ensure social icons span the width of the card
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#f9f9f9',
+    },
+    scrollViewContainer: {
+        alignItems: 'center',
+    },
+    headerContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    dateText: {
+        color: '#b0b0b0',
+        fontSize: 16,
+    },
+    headerTitle: {
+        fontSize: 30,
+        paddingTop: 20,
+        fontWeight: 'bold',
+    },
+    topNewsCard: {
+        width: '100%',
+        padding: 20,
+    },
+    topNewsImage: {
+        width: '100%',
+        height: 250,
+        borderRadius: 10,
+        marginBottom: 10,
+    },
+    topNewsTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    recentNewsHeader: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        alignSelf: 'flex-start',
+        marginLeft: 20,
+        marginBottom: 10,
+    },
+    recentNewsCard: {
+        width: '90%',
+        marginBottom: 20,
+    },
+    recentNewsImage: {
+        width: '100%',
+        height: 120,
+        borderRadius: 10,
+    },
+    recentNewsTitle: {
+        fontSize: 18,
+        marginTop: 5,
+    },
+    recentNewsAuthorDate: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 10,
+    },
 });
 
+export default LessonsPage;
