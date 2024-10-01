@@ -1,69 +1,130 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, Button, Alert, SafeAreaView, ScrollView } from 'react-native';
-import Footer from '../components/Footer';
+import React from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation if needed
+import articles from "../components/data/articles";
 
-export default function ContactUs() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+const getTodaysDate = () => {
+    const today = new Date();
+    return today.toLocaleDateString('en-US', {
+        weekday: 'long', // "Monday"
+        year: 'numeric', // "2024"
+        month: 'long', // "June"
+        day: 'numeric' // "9"
+    });
+};
 
-  const handleSubmit = () => {
-    Alert.alert(`Thank you for contacting us, ${name}! We will respond to ${email} shortly.`);
-  };
+const todayDate = getTodaysDate();
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.contentContainer}>
-        <Text style={styles.header}>Welcome to Hararianorg</Text>
-        <Text style={styles.subheader}>Contact Us</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={name}
-          onChangeText={setName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <Button title="Submit" onPress={handleSubmit} />
-      </ScrollView>
-      <Footer />
-    </SafeAreaView>
-  );
-}
+const News = () => {
+    const navigation = useNavigation(); // Use this line if navigation isn't directly passed as a prop
+
+    return (
+        <View style={styles.container}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
+            >
+                {/* Header */}
+                <View style={styles.headerContainer}>
+                    <Text style={styles.dateText}>{todayDate}</Text>
+                    <Text style={styles.headerTitle}>Top News</Text>
+                </View>
+
+                {/* Top News Section */}
+                <TouchableOpacity
+                    style={styles.topNewsCard}
+                    onPress={() => navigation.navigate('HilalArticle', { article: articles[0] })} // Assuming articles[0] is the top news
+                >
+                    <Image
+                        source={{ uri: 'https://storage.googleapis.com/islamic_lessons_images/Nabi%20Mawlud%20Invite' }}
+                        style={styles.topNewsImage}
+                    />
+                    <Text style={styles.topNewsTitle}>Top startups that are changing the way we travel</Text>
+                </TouchableOpacity>
+
+                {/* Recent News Section */}
+                <Text style={styles.recentNewsHeader}>Recent News</Text>
+                {articles.map((article, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        style={styles.recentNewsCard}
+                        onPress={() => navigation.navigate('HilalArticle', { article })}
+                    >
+                        <Image
+                            source={{ uri: article.imageUrl }}
+                            style={styles.recentNewsImage}
+                        />
+                        <Text style={styles.recentNewsTitle}>{article.title}</Text>
+                        <Text style={styles.recentNewsAuthorDate}>{article.author} - {article.date}</Text>
+                    </TouchableOpacity>
+                ))}
+
+            </ScrollView>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  scrollContainer: {
-    flex: 1,
-  },
-  contentContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  subheader: {
-    fontSize: 18,
-    marginTop: 20,
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingLeft: 10,
-    width: '100%',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#f9f9f9',
+        paddingTop: 70,
+    },
+    scrollViewContainer: {
+        alignItems: 'center',
+    },
+    headerContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    dateText: {
+        color: '#b0b0b0',
+        fontSize: 16,
+    },
+    headerTitle: {
+        fontSize: 30,
+        paddingTop: 20,
+        fontWeight: 'bold',
+    },
+    topNewsCard: {
+        width: '100%',
+        padding: 20,
+    },
+    topNewsImage: {
+        width: '100%',
+        height: 250,
+        borderRadius: 10,
+        marginBottom: 10,
+    },
+    topNewsTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    recentNewsHeader: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        alignSelf: 'flex-start',
+        marginLeft: 20,
+        marginBottom: 10,
+    },
+    recentNewsCard: {
+        width: '90%',
+        marginBottom: 20,
+    },
+    recentNewsImage: {
+        width: '100%',
+        height: 120,
+        borderRadius: 10,
+    },
+    recentNewsTitle: {
+        fontSize: 18,
+        marginTop: 5,
+    },
+    recentNewsAuthorDate: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 10,
+    },
 });
+
+export default News;

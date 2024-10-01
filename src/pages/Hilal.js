@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation if needed
 import articles from "../components/data/articles";
-
 
 const getTodaysDate = () => {
     const today = new Date();
@@ -15,56 +15,60 @@ const getTodaysDate = () => {
 
 const todayDate = getTodaysDate();
 
+const Hilal = () => {
+    const navigation = useNavigation(); // Use this line if navigation isn't directly passed as a prop
 
-const ReadLaterPage = () => (
-    <View style={styles.container}>
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollViewContainer}
-        >
-            {/* Header */}
-            <View style={styles.headerContainer}>
-                <Text style={styles.dateText}>{todayDate}</Text>
-                <Text style={styles.headerTitle}>Top News</Text>
-            </View>
-
-            {/* Top News Section */}
-            <TouchableOpacity
-                style={styles.topNewsCard}
-                onPress={() => console.log('Navigating to the Top News article')}
+    return (
+        <View style={styles.container}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollViewContainer}
             >
-                <Image
-                    source={{ uri: 'https://storage.googleapis.com/islamic_lessons_images/Nabi%20Mawlud%20Invite' }}
-                    style={styles.topNewsImage}
-                />
-                <Text style={styles.topNewsTitle}>Top startups that are changing the way we travel</Text>
-            </TouchableOpacity>
+                {/* Header */}
+                <View style={styles.headerContainer}>
+                    <Text style={styles.dateText}>{todayDate}</Text>
+                    <Text style={styles.headerTitle}>Top News</Text>
+                </View>
 
-            {/* Recent News Section */}
-            <Text style={styles.recentNewsHeader}>Recent News</Text>
-            {articles.map((article, index) => (
+                {/* Top News Section */}
                 <TouchableOpacity
-                    key={index}
-                    style={styles.recentNewsCard}
-                    onPress={() => console.log(`Navigating to ${article.title}`)}
+                    style={styles.topNewsCard}
+                    onPress={() => navigation.navigate('HilalArticle', { article: articles[0] })} // Assuming articles[0] is the top news
                 >
                     <Image
-                        source={{ uri: article.imageUrl }}
-                        style={styles.recentNewsImage}
+                        source={{ uri: 'https://storage.googleapis.com/islamic_lessons_images/Nabi%20Mawlud%20Invite' }}
+                        style={styles.topNewsImage}
                     />
-                    <Text style={styles.recentNewsTitle}>{article.title}</Text>
-                    <Text style={styles.recentNewsAuthorDate}>{article.author} - {article.date}</Text>
+                    <Text style={styles.topNewsTitle}>Top startups that are changing the way we travel</Text>
                 </TouchableOpacity>
-            ))}
 
-        </ScrollView>
-    </View>
-);
+                {/* Recent News Section */}
+                <Text style={styles.recentNewsHeader}>Recent News</Text>
+                {articles.map((article, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        style={styles.recentNewsCard}
+                        onPress={() => navigation.navigate('HilalArticle', { article })}
+                    >
+                        <Image
+                            source={{ uri: article.imageUrl }}
+                            style={styles.recentNewsImage}
+                        />
+                        <Text style={styles.recentNewsTitle}>{article.title}</Text>
+                        <Text style={styles.recentNewsAuthorDate}>{article.author} - {article.date}</Text>
+                    </TouchableOpacity>
+                ))}
+
+            </ScrollView>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f9f9f9',
+        paddingTop: 70,
     },
     scrollViewContainer: {
         alignItems: 'center',
@@ -123,4 +127,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ReadLaterPage;
+export default Hilal;

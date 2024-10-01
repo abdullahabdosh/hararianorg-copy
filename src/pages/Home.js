@@ -8,9 +8,6 @@ import ArticlesSlider from '../components/ArticlesSlider';
 export default function HomePage() {
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Hararian Organization Inc. </Text>
-      </View>
     
       <HomeSlider/>
 
